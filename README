@@ -1,0 +1,10 @@
+
+Algorithms and Analysis Summer 2012 Assignment skeleton.
+
+Includes:
+
+* 2-3 implementation
+* CppUnitLite unit test framework
+* basic Makefiles
+* skeleton code provided to students
+* timing code.
