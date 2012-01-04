@@ -8,3 +8,8 @@ Includes:
 * basic Makefiles
 * skeleton code provided to students
 * timing code.
+
+Changelog:
+
+-v1.1:
+* now compiles on yallara (using gmake)

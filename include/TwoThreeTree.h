@@ -7,7 +7,9 @@
 #include <stdlib.h>
 #include <stdint.h>
 
+#ifndef UINT32_MAX
 #define UINT32_MAX  (0xffffffff)
+#endif
 
 typedef struct ttnode {
     uint32_t data[2];
