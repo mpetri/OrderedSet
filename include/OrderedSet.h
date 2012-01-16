@@ -23,6 +23,9 @@ class OrderedSet
         virtual size_t Items() {
             return n;
         };
+        virtual size_t Memory() {
+            return mem;
+        };
     protected:
         inline void VERBOSE(const char* format,...) {
             if (verbose) {
@@ -37,6 +40,7 @@ class OrderedSet
     protected:
         bool verbose;
         size_t n;
+        size_t mem;
 };
 
 #endif // ORDEREDSET_H
