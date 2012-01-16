@@ -8,6 +8,7 @@
 
 typedef struct bstnode {
     uint32_t data;
+    struct bstnode* parent;
     struct bstnode* left;
     struct bstnode* right;
 } bstnode_t;
