@@ -71,8 +71,86 @@ class utils
         };
         static cmd_args_t* parse_args(int argc,char** argv) {
             cmd_args_t* args = (cmd_args_t*) malloc(sizeof(cmd_args_t));
+            args->runs = 1;
+            args->file = NULL;
+            args->type = OSET_INVALID;
+            args->verbose = false;
 
-            /* TODO */
+            int opt = GETOPT_FINISHED;
+
+            if (argc <= 1) {
+                utils::print_usage(argv[0]);
+                exit(EXIT_FAILURE);
+            }
+            while ((opt = getopt(argc, argv, "i:t:r:v")) != GETOPT_FINISHED) {
+                switch (opt) {
+                    case 'i':
+                        args->file = optarg;
+                        break;
+                    case 't':
+                        if (strcmp(optarg, "linkedlist") == 0) {
+                            args->type = OSET_LINKEDLIST;
+                        } else if (strcmp(optarg, "bst") == 0) {
+                            args->type = OSET_BST;
+                        } else if (strcmp(optarg, "skiplist") == 0) {
+                            args->type = OSET_SKIPLIST;
+                        } else if (strcmp(optarg, "treap") == 0) {
+                            args->type = OSET_TREAP;
+                        } else if (strcmp(optarg, "23tree") == 0) {
+                            args->type = OSET_23TREE;
+                        } else if (strcmp(optarg, "splaytree") == 0) {
+                            args->type = OSET_SPLAY;
+                        } else {
+                            fprintf(stderr, "ERROR: mode <%s> unknown!\n", optarg);
+                            exit(EXIT_FAILURE);
+                        }
+                        break;
+                    case 'r':
+                        args->runs = atoi(optarg);
+                        break;
+                    case 'v':
+                        args->verbose = true;
+                        break;
+                    case 'h':
+                    default:
+                        utils::print_usage(argv[0]);
+                        exit(EXIT_SUCCESS);
+                }
+            }
+
+            if (args->file == NULL || args->type == OSET_INVALID) {
+                utils::print_usage(argv[0]);
+                exit(EXIT_FAILURE);
+            }
+
+            fprintf(stdout,"FILE :                       %s\n",args->file);
+
+            switch (args->type) {
+                case OSET_LINKEDLIST:
+                    fprintf(stdout,"TYPE :                       linked list\n");
+                    break;
+                case OSET_BST:
+                    fprintf(stdout,"TYPE :                       bst\n");
+                    break;
+                case OSET_SKIPLIST:
+                    fprintf(stdout,"TYPE :                       skip list\n");
+                    break;
+                case OSET_TREAP:
+                    fprintf(stdout,"TYPE :                       treap\n");
+                    break;
+                case OSET_23TREE:
+                    fprintf(stdout,"TYPE :                       2-3 tree\n");
+                    break;
+                case OSET_SPLAY:
+                    fprintf(stdout,"TYPE :                       splay tree\n");
+                    break;
+                case OSET_INVALID:
+                    fprintf(stdout,"Invalid type.");
+                    utils::print_usage(argv[0]);
+                    exit(EXIT_FAILURE);
+            }
+
+            fprintf(stdout,"RUNS :                       %zu\n",args->runs);
 
             return args;
         };
@@ -101,12 +179,43 @@ class utils
             return 0;
         };
         static float calc_stddev(uint64_t* times,size_t n) {
-            /* TODO */
-            return 0.0f;
+            size_t  i;
+            uint64_t  total = 0;
+            uint64_t  total_square = 0;
+            uint64_t  stddev;
+            uint64_t  avg;
+            for (i = 0; i < n; i++) {
+                total += times[i];
+                total_square += (times[i] * times[i]);
+            }
+            avg = total / n;
+            stddev = sqrt((total_square / n) - (avg * avg));
+            return (((float)(stddev)) / 1.0e9);
         };
         static float calculate_avg(uint64_t* times,size_t n) {
-            /* TODO */
-            return 0.0f;
+            size_t i;
+            uint64_t total = 0;
+            for (i = 0; i < n; i++) {
+                total += times[i];
+            }
+            /* convert to right format */
+            return (((float)(total / n)) / 1.0e9);
+        };
+        static void* safe_malloc(size_t size) {
+            void* mem_block = NULL;
+            if ((mem_block = calloc(1,size)) == NULL) {
+                fprintf(stderr, "ERROR: safe_malloc(%zu) cannot allocate memory.", size);
+                exit(EXIT_FAILURE);
+            }
+            return (mem_block);
+        };
+        static void* safe_realloc(void* old_mem, size_t new_size) {
+            if ((old_mem = realloc(old_mem, new_size)) == NULL) {
+                fprintf(stderr, "ERROR: safe_realloc() cannot allocate"
+                        "%zu blocks of memory.\n", new_size);
+                exit(EXIT_FAILURE);
+            }
+            return (old_mem);
         };
 };
 

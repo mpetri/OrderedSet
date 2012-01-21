@@ -13,16 +13,18 @@ class LinkedList : public OrderedSet
     public:
         LinkedList(bool);
         virtual ~LinkedList();
+        virtual int64_t Successor(uint32_t x);
         virtual int64_t Max();
         virtual int64_t Min();
-        virtual int64_t Successor(uint32_t x);
         virtual void Insert(uint32_t x);
         virtual void Remove(uint32_t x);
         virtual bool Find(uint32_t x);
         virtual void Print();
+        llnode_t* Head() {
+            return head;
+        };
     private:
         llnode_t* head;
 };
 
 #endif // LINKEDLIST_H
-

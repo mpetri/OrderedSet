@@ -7,6 +7,7 @@
 
 typedef struct slnode {
     uint32_t data;
+    uint8_t lvl;
     struct slnode** next;
 } slnode_t;
 
@@ -22,6 +23,9 @@ class SkipList : public OrderedSet
         virtual void Remove(uint32_t x);
         virtual bool Find(uint32_t x);
         virtual void Print();
+        slnode_t* Head() {
+            return head;
+        };
     private:
         int CalcLevel();
     private:

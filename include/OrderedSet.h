@@ -11,8 +11,11 @@ class OrderedSet
     public:
         OrderedSet(bool v) : verbose(v) {
             n = 0;
+            mem = 0;
         };
-        virtual ~OrderedSet() {};
+        virtual ~OrderedSet() {
+            n = 0;
+        };
         virtual int64_t Successor(uint32_t x) = 0;
         virtual int64_t Max() = 0;
         virtual int64_t Min() = 0;

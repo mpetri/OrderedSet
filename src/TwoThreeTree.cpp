@@ -82,9 +82,9 @@ TwoThreeTree::Remove(uint32_t x)
             tmp->data[0] = UINT32_MAX;
             tmp->left = tmp->middle = tmp->right = NULL;
             if (!tmp->parent) {
+                mem -= sizeof(ttnode_t);
                 free(tmp); /* we are removing the root */
                 root = NULL;
-                mem = 0;
                 return;
             }
         } else {
@@ -124,8 +124,8 @@ TwoThreeTree::Remove(uint32_t x)
                 if (p->left) p->left->parent = p;
                 if (p->middle) p->middle->parent = p;
                 if (p->right) p->right->parent = p;
-                free(sib);
                 mem -= sizeof(ttnode_t);
+                free(sib);
                 tmp->left = p;
                 tmp->parent = p->parent;
                 tmp->right = tmp->middle = NULL;
@@ -172,8 +172,8 @@ TwoThreeTree::Remove(uint32_t x)
                     tmp->right = p->middle->right;
                     if (tmp->middle) tmp->middle->parent = tmp;
                     if (tmp->right) tmp->right->parent = tmp;
-                    free(p->middle);
                     mem -= sizeof(ttnode_t);
+                    free(p->middle);
                     p->middle = NULL;
                 } else if (p->middle && !IsTwoNode(p->middle)) {
                     /* case 4a */
@@ -198,8 +198,8 @@ TwoThreeTree::Remove(uint32_t x)
                     tmp->middle = p->middle->right;
                     if (tmp->left) tmp->left->parent = tmp;
                     if (tmp->middle) tmp->middle->parent = tmp;
-                    free(p->middle);
                     mem -= sizeof(ttnode_t);
+                    free(p->middle);
                     p->middle = NULL;
                 } else if (p->middle && !IsTwoNode(p->middle)) {
                     /* case 4b */
@@ -222,8 +222,8 @@ TwoThreeTree::Remove(uint32_t x)
                     if (p->left->right) p->left->right->parent = p->left;
                     p->data[0] = p->data[1];
                     p->data[1] = UINT32_MAX;
-                    free(tmp);
                     mem -= sizeof(ttnode_t);
+                    free(tmp);
                     p->middle = NULL;
                 } else if (p->right && IsTwoNode(p->right)) {
                     /* case 3b */
@@ -234,8 +234,8 @@ TwoThreeTree::Remove(uint32_t x)
                     p->right->left = tmp->left;
                     if (p->right->left) p->right->left->parent = p->right;
                     p->data[1] = UINT32_MAX;
-                    free(tmp);
                     mem -= sizeof(ttnode_t);
+                    free(tmp);
                     p->middle = NULL;
                 } else if (p->left && !IsTwoNode(p->left)) {
                     /* case 4a */
@@ -465,7 +465,7 @@ TwoThreeTree::SplitNode(ttnode_t* tnode,ttnode_t* ins)
 ttnode_t*
 TwoThreeTree::NewNode(uint32_t x,uint32_t y)
 {
-    ttnode_t* tn = (ttnode_t*) malloc(sizeof(ttnode_t));
+    ttnode_t* tn = (ttnode_t*) utils::safe_malloc(sizeof(ttnode_t));
     mem += sizeof(ttnode_t);
     if (y<x) {
         tn->data[1] = x;

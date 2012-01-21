@@ -8,42 +8,23 @@
 
 TEST(TwoThreeTree , InsertFind)
 {
+    LinkedList* list = new LinkedList(false);
     TwoThreeTree* bst = new TwoThreeTree(false);
 
-    bst->Insert(1);
-    bst->Insert(5);
-    bst->Insert(2);
-    bst->Insert(61);
-    bst->Insert(61);
-    bst->Insert(24);
-    bst->Insert(51);
-    bst->Insert(61);
-    bst->Insert(57);
-    bst->Insert(32);
-    bst->Insert(24);
-
-    CHECK(bst->Items() == 8);
-
-    CHECK(bst->Find(1) == true);
-    bst->Remove(1);
-    CHECK(bst->Items() == 7);
-    CHECK(bst->Find(1) == false);
-    bst->Insert(1);
-    CHECK(bst->Find(1) == true);
-    CHECK(bst->Items() == 8);
-
-    CHECK(bst->Find(61) == true);
-    bst->Remove(61);
-    CHECK(bst->Find(61) == false);
-    CHECK(bst->Find(62) == false);
-    CHECK(bst->Items() == 7);
-    bst->Remove(62);
-    CHECK(bst->Items() == 7);
-    bst->Insert(62);
-    CHECK(bst->Items() == 8);
-    CHECK(bst->Find(62) == true);
-
+    size_t n=5000;
+    uint32_t* A = (uint32_t*)malloc(n*sizeof(uint32_t));
+    for (size_t i=0; i<n; i++) A[i] = rand() % 5001;
+    for (size_t i=0; i<n; i++) {
+        list->Insert(A[i]);
+        bst->Insert(A[i]);
+    }
+    for (size_t i=0; i<n; i++) {
+        CHECK(list->Find(A[i]) == bst->Find(A[i]));
+        CHECK(list->Find(A[i]+1) == bst->Find(A[i]+1));
+    }
+    delete list;
     delete bst;
+    free(A);
 }
 
 TEST(TwoThreeTree , Remove)
@@ -197,6 +178,3 @@ TEST(TwoThreeTree , Successor)
     CHECK(bst->Successor(61) == -1);
     CHECK(bst->Successor(6) == -1);
 }
-
-
-

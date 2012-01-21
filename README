@@ -11,5 +11,9 @@ Includes:
 
 Changelog:
 
--v1.1:
+-v0.2
+* added bst implementation
+* added linkedlist implementation
+* added tests
+-v0.1:
 * now compiles on yallara (using gmake)
