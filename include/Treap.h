@@ -25,7 +25,10 @@ class Treap : public OrderedSet
         virtual void Insert(uint32_t x);
         virtual void Remove(uint32_t x);
         virtual bool Find(uint32_t x);
-        virtual void Print();
+        virtual void Print()  {
+            Print(root);
+            fprintf(stdout,"\n");
+        };
     private:
         tnode_t* FindMin(tnode_t* n);
         tnode_t* FindMax(tnode_t* n);
